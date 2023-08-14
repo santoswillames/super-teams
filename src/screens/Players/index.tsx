@@ -45,7 +45,7 @@ export function Players() {
           showsHorizontalScrollIndicator={false}
           horizontal
         />
-        <S.NumbersOfTeams>{players.length}</S.NumbersOfTeams>
+        <S.NumberOfTeams>{players.length}</S.NumberOfTeams>
       </S.HeaderList>
       <FlatList
         data={players}

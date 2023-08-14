@@ -22,7 +22,7 @@ export const HeaderList = styled.View`
   gap: 20px;
 `
 
-export const NumbersOfTeams = styled.Text`
+export const NumberOfTeams = styled.Text`
   ${({ theme }) => css`
     color: ${theme.COLORS.GRAY_200};
     font-family: ${theme.FONT_FAMILY.BOLD};
