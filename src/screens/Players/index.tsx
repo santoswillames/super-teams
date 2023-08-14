@@ -42,7 +42,7 @@ export function Players() {
               onPress={() => setTeam(item)}
             />
           )}
-          showsHorizontalScrollIndicator
+          showsHorizontalScrollIndicator={false}
           horizontal
         />
         <S.NumbersOfTeams>{players.length}</S.NumbersOfTeams>
@@ -50,7 +50,7 @@ export function Players() {
       <FlatList
         data={players}
         keyExtractor={(item) => item}
-        showsVerticalScrollIndicator
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <PlayerCard name={item} onRemove={() => console.log('remove')} />
         )}
