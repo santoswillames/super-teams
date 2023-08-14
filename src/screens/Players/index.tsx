@@ -6,10 +6,18 @@ import { Highlight } from '@components/Highlight'
 import { ButtonIcon } from '@components/ButtonIcon'
 import { Input } from '@components/Input'
 import { Filter } from '@components/Filter'
+import { PlayerCard } from '@components/PlayerCard'
+import { ListEmpty } from '@components/ListEmpty'
+import { Button } from '@components/Button'
 
 export function Players() {
   const [team, setTeam] = useState('time React')
-  const times = ['time React', 'time vue', 'time angular', 'time svelte']
+  const [players, setPlayers] = useState([
+    'Willames Santos',
+    'Jean Carlos',
+    'Luan Cesar',
+    'Manoel Machado',
+  ])
 
   return (
     <S.Container>
@@ -25,7 +33,7 @@ export function Players() {
 
       <S.HeaderList>
         <FlatList
-          data={times}
+          data={['time React', 'time vue']}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <Filter
@@ -34,10 +42,27 @@ export function Players() {
               onPress={() => setTeam(item)}
             />
           )}
+          showsHorizontalScrollIndicator
           horizontal
         />
-        <S.NumbersOfTeams>{times.length}</S.NumbersOfTeams>
+        <S.NumbersOfTeams>{players.length}</S.NumbersOfTeams>
       </S.HeaderList>
+      <FlatList
+        data={players}
+        keyExtractor={(item) => item}
+        showsVerticalScrollIndicator
+        renderItem={({ item }) => (
+          <PlayerCard name={item} onRemove={() => console.log('remove')} />
+        )}
+        ListEmptyComponent={() => (
+          <ListEmpty message="Não há pessoas nesse time" />
+        )}
+        contentContainerStyle={[
+          { paddingBottom: 100 },
+          players.length === 0 && { flex: 1 },
+        ]}
+      />
+      <Button title="Remover Turma" type="SECONDARY" />
     </S.Container>
   )
 }
