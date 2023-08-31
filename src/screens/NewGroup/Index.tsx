@@ -4,10 +4,10 @@ import { useNavigation } from '@react-navigation/native'
 import { groupCreate } from '@storage/group/groupCreate'
 import { AppError } from '@utils/AppError'
 import * as S from './styles'
-import { Header } from '@components/Header'
-import { Highlight } from '@components/Highlight'
-import { Button } from '@components/Button'
 import { Input } from '@components/Input'
+import { Header } from '@components/Header'
+import { Button } from '@components/Button'
+import { Highlight } from '@components/Highlight'
 
 export function NewGroup() {
   const [group, setGroup] = useState('')

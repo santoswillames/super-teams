@@ -5,24 +5,26 @@ import { AppError } from '@utils/AppError'
 import * as S from './styles'
 import { playerAddByGroup } from '@storage/player/playerAddByGroup'
 import { PlayerStorageDTO } from '@storage/player/PlayerStorageDTO'
-import { playersGetByGroupAndTeam } from '@storage/player/playersGetByGroupAndTeam'
-import { Header } from '@components/Header'
-import { Highlight } from '@components/Highlight'
-import { ButtonIcon } from '@components/ButtonIcon'
-import { Input } from '@components/Input'
-import { Filter } from '@components/Filter'
-import { PlayerCard } from '@components/PlayerCard'
-import { ListEmpty } from '@components/ListEmpty'
-import { Button } from '@components/Button'
-import { playerRemoveByGroup } from '@storage/player/playerRemoveByGroup'
 import { groupRemoveByName } from '@storage/group/groupRemoveByName'
+import { playerRemoveByGroup } from '@storage/player/playerRemoveByGroup'
+import { playersGetByGroupAndTeam } from '@storage/player/playersGetByGroupAndTeam'
+import { Input } from '@components/Input'
+import { Header } from '@components/Header'
+import { Filter } from '@components/Filter'
+import { Button } from '@components/Button'
+import { Loading } from '@components/Loading'
+import { Highlight } from '@components/Highlight'
+import { ListEmpty } from '@components/ListEmpty'
+import { ButtonIcon } from '@components/ButtonIcon'
+import { PlayerCard } from '@components/PlayerCard'
 
 type RouteParams = {
   group: string
 }
 
 export function Players() {
-  const [team, setTeam] = useState('time React')
+  const [isLoading, setIsLoading] = useState(true)
+  const [team, setTeam] = useState('time a')
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([])
   const [newPlayerName, setNewPlayerName] = useState('')
 
@@ -62,6 +64,7 @@ export function Players() {
 
   const fetchPlayersByTeam = useCallback(async () => {
     try {
+      setIsLoading(true)
       const playersByTeam = await playersGetByGroupAndTeam(group, team)
       setPlayers(playersByTeam)
     } catch (error) {
@@ -70,6 +73,8 @@ export function Players() {
         'Pessoas',
         'Não foi possível carregar as pessoas do time selecionado',
       )
+    } finally {
+      setIsLoading(false)
     }
   }, [group, team])
 
@@ -123,7 +128,7 @@ export function Players() {
 
       <S.HeaderList>
         <FlatList
-          data={['time React', 'time vue']}
+          data={['time a', 'time b']}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <Filter
@@ -137,26 +142,30 @@ export function Players() {
         />
         <S.NumberOfTeams>{players.length}</S.NumberOfTeams>
       </S.HeaderList>
-      <FlatList
-        data={players}
-        keyExtractor={(item) => item.name}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <PlayerCard
-            name={item.name}
-            onRemove={() => handlePlayerRemove(item.name)}
-          />
-        )}
-        ListEmptyComponent={() => (
-          <ListEmpty message="Não há pessoas nesse time" />
-        )}
-        contentContainerStyle={[
-          { paddingBottom: 100 },
-          players.length === 0 && { flex: 1 },
-        ]}
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <FlatList
+          data={players}
+          keyExtractor={(item) => item.name}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <PlayerCard
+              name={item.name}
+              onRemove={() => handlePlayerRemove(item.name)}
+            />
+          )}
+          ListEmptyComponent={() => (
+            <ListEmpty message="Não há pessoas nesse time" />
+          )}
+          contentContainerStyle={[
+            { paddingBottom: 100 },
+            players.length === 0 && { flex: 1 },
+          ]}
+        />
+      )}
       <Button
-        title="Remover Turma"
+        title="Remover turma"
         type="SECONDARY"
         onPress={handleGroupRemove}
       />
